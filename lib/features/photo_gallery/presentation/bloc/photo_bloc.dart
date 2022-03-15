@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:photo_app/features/photo_gallery/domain/entities/picture.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/get_stored_pictures_usecase.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/remove_picture_usecase.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/store_picture_usecase.dart';
@@ -14,7 +15,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     required this.storePictureUsecase,
     required this.getStoredPicturesUsecase,
     required this.removePictureUsecase,
-  }) : super(Empty());
+  }) : super(Loading());
 
   @override
   Stream<PhotoState> mapEventToState(PhotoEvent event) async* {

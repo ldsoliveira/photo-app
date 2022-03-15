@@ -9,8 +9,6 @@ abstract class PhotoAppLocalDataSource {
   Future<List<Picture>> getStoredPictures();
 }
 
-// TODO: tentar melhorar essa logica terrivel aqui
-
 class PhotoAppLocalDataSourceImpl implements PhotoAppLocalDataSource {
   final SharedPreferences sharedPreferences;
 
@@ -20,14 +18,20 @@ class PhotoAppLocalDataSourceImpl implements PhotoAppLocalDataSource {
   Future<List<Picture>> storePicture({required PictureImpl picture}) async {
     final storedPictures =
         await sharedPreferences.getStringList(kKeyValue) ?? [];
+    final convertedPictures = await _convertPicturesFromStorage();
 
-    final finalList = [
-      ...storedPictures,
-      picture.toJson(),
-    ];
-
-    await sharedPreferences.setStringList(kKeyValue, finalList);
-    return _convertPicturesFromStorage();
+    if (convertedPictures.any((pic) => pic == picture)) {
+      return convertedPictures;
+    } else {
+      await sharedPreferences.setStringList(
+        kKeyValue,
+        [
+          ...storedPictures,
+          picture.toJson(),
+        ],
+      );
+      return convertedPictures;
+    }
   }
 
   @override
@@ -38,10 +42,7 @@ class PhotoAppLocalDataSourceImpl implements PhotoAppLocalDataSource {
   Future<List<Picture>> removePicture({required PictureImpl picture}) async {
     final convertedPictures = await _convertPicturesFromStorage();
 
-    convertedPictures.removeWhere(
-      (pic) =>
-          pic.path == picture.path && pic.description == picture.description,
-    );
+    convertedPictures.removeWhere((pic) => pic == picture);
 
     await sharedPreferences.setStringList(
       kKeyValue,

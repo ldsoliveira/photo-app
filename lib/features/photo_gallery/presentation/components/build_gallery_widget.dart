@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_app/features/photo_gallery/presentation/bloc/photo_bloc.dart';
+import 'package:photo_app/features/photo_gallery/presentation/bloc/photo_event.dart';
 import 'package:photo_app/features/photo_gallery/presentation/bloc/photo_state.dart';
 
 class BuildGalleryWidget extends StatelessWidget {
@@ -42,7 +43,8 @@ class BuildGalleryWidget extends StatelessWidget {
         );
       }
 
-      return CircularProgressIndicator();
+      BlocProvider.of<PhotoBloc>(context).add(GetStoredPictures());
+      return Center(child: CircularProgressIndicator());
     });
   }
 }

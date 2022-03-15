@@ -58,7 +58,6 @@ class _CameraWidgetState extends State<CameraWidget> {
 
           final pic = PictureImpl(
             path: img?.path ?? '',
-            description: '',
           );
 
           Navigator.of(context)

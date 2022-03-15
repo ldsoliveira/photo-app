@@ -24,8 +24,13 @@ class _DetailsWidget extends State<DetailsWidget> {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
-      _controller.text = widget.picture.description;
+      _controller.text = widget.picture.description ?? '';
     });
+  }
+
+  void _unfocusAndPopCurrentScreen() {
+    FocusScope.of(context).unfocus();
+    Navigator.of(context).pop();
   }
 
   @override
@@ -37,22 +42,30 @@ class _DetailsWidget extends State<DetailsWidget> {
           IconButton(
             onPressed: () {
               BlocProvider.of<PhotoBloc>(context).add(
-                StorePicture(widget.picture),
+                StorePicture(
+                  PictureImpl(
+                    path: widget.picture.path,
+                    description: _controller.text,
+                  ),
+                ),
               );
-              //TODO: Não está enviando a descrição
-              FocusScope.of(context).unfocus();
-              Navigator.of(context).pop();
+
+              _unfocusAndPopCurrentScreen();
             },
             icon: Icon(Icons.check),
           ),
           IconButton(
             onPressed: () {
               BlocProvider.of<PhotoBloc>(context).add(
-                RemovePicture(widget.picture),
+                RemovePicture(
+                  PictureImpl(
+                    path: widget.picture.path,
+                    description: _controller.text,
+                  ),
+                ),
               );
 
-              FocusScope.of(context).unfocus();
-              Navigator.of(context).pop();
+              _unfocusAndPopCurrentScreen();
             },
             icon: Icon(Icons.delete),
           ),

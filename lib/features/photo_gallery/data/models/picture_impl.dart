@@ -4,7 +4,7 @@ import 'package:photo_app/features/photo_gallery/domain/entities/picture.dart';
 class PictureImpl extends Picture {
   PictureImpl({
     required this.path,
-    required this.description,
+    this.description,
   }) : super(
           path: path,
           description: description,
@@ -13,7 +13,7 @@ class PictureImpl extends Picture {
   @override
   final String path;
   @override
-  final String description;
+  final String? description;
 
   Map<String, dynamic> toMap() {
     return {
