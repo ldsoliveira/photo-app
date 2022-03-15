@@ -27,10 +27,11 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
         final pictures = await getStoredPicturesUsecase(NoParams());
 
         if (pictures.isEmpty) {
-          Empty();
+          yield Empty();
+        } else {
+          yield Loaded(pictures: pictures);
         }
 
-        yield Loaded(pictures: pictures);
         break;
       case StorePicture:
         event as StorePicture;
