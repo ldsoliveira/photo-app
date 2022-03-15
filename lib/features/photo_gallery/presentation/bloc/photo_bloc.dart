@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/get_picture_usecase.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/get_stored_pictures_usecase.dart';
+import 'package:photo_app/features/photo_gallery/domain/usecases/remove_picture_usecase.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/store_picture_usecase.dart';
 import 'package:photo_app/features/photo_gallery/presentation/bloc/photo_event.dart';
 import 'package:photo_app/features/photo_gallery/presentation/bloc/photo_state.dart';
@@ -9,12 +10,15 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
   final StorePictureUsecase storePictureUsecase;
   final GetPictureUsecase getPictureUsecase;
   final GetStoredPicturesUsecase getStoredPicturesUsecase;
+  final RemovePictureUsecase removePictureUsecase;
 
   PhotoBloc({
     required this.getPictureUsecase,
     required this.storePictureUsecase,
     required this.getStoredPicturesUsecase,
+    required this.removePictureUsecase,
   }) : super(Empty());
+  // TODO: dar um jeito do empty só ser chamado se n tiver nada
 
   @override
   Stream<PhotoState> mapEventToState(PhotoEvent event) async* {
@@ -29,6 +33,9 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     } else if (event is StorePicture) {
       final pictures = await getStoredPicturesUsecase();
       storePictureUsecase(event.picture);
+      yield Loaded(pictures: pictures);
+    } else if (event is RemovePicture) {
+      final pictures = await removePictureUsecase(event.picture);
       yield Loaded(pictures: pictures);
     } else {
       throw Exception();

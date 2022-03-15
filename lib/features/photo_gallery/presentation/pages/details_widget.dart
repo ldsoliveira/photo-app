@@ -47,7 +47,12 @@ class _DetailsWidget extends State<DetailsWidget> {
           ),
           IconButton(
             onPressed: () {
-              // TODO: remove picture usecase
+              BlocProvider.of<PhotoBloc>(context).add(
+                RemovePicture(widget.picture),
+              );
+
+              FocusScope.of(context).unfocus();
+              Navigator.of(context).pop();
             },
             icon: Icon(Icons.delete),
           ),

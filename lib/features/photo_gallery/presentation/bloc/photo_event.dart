@@ -20,4 +20,10 @@ class StorePicture extends PhotoEvent {
   StorePicture(this.picture);
 }
 
+class RemovePicture extends PhotoEvent {
+  final PictureImpl picture;
+
+  RemovePicture(this.picture);
+}
+
 class GetStoredPictures extends PhotoEvent {}

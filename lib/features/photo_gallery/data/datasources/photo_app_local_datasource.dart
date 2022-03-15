@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class PhotoAppLocalDataSource {
   Future<List<Picture>> storePicture({required PictureImpl picture});
   Future<Picture> getPicture({required PictureImpl picture});
+  Future<List<Picture>> removePicture({required PictureImpl picture});
   Future<List<Picture>> getStoredPictures();
 }
 
@@ -40,7 +41,23 @@ class PhotoAppLocalDataSourceImpl implements PhotoAppLocalDataSource {
     final storedPictures = await sharedPreferences.getStringList(kKeyValue);
     return _convertedPicturesFromStorage(storedPictures);
   }
+
+  @override
+  Future<List<Picture>> removePicture({required PictureImpl picture}) async {
+    final storedPictures = await sharedPreferences.getStringList(kKeyValue);
+    final convertedPictures = _convertedPicturesFromStorage(storedPictures);
+    convertedPictures.removeWhere(
+      (pic) => pic.props == picture.props,
+    );
+
+    await sharedPreferences.setStringList(
+      kKeyValue,
+      convertedPictures.map((e) => e.toJson()).toList(),
+    );
+
+    return getStoredPictures();
+  }
 }
 
-List<Picture> _convertedPicturesFromStorage(List<String>? pictures) =>
+List<PictureImpl> _convertedPicturesFromStorage(List<String>? pictures) =>
     pictures?.map((pic) => PictureImpl.fromJson(pic)).toList() ?? [];

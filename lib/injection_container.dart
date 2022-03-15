@@ -4,6 +4,7 @@ import 'package:photo_app/features/photo_gallery/data/repositories/picture_repos
 import 'package:photo_app/features/photo_gallery/domain/repositories/picture_repository.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/get_picture_usecase.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/get_stored_pictures_usecase.dart';
+import 'package:photo_app/features/photo_gallery/domain/usecases/remove_picture_usecase.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/store_picture_usecase.dart';
 import 'package:photo_app/features/photo_gallery/presentation/bloc/photo_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,12 +17,14 @@ Future<void> init() async {
         getPictureUsecase: sl(),
         getStoredPicturesUsecase: sl(),
         storePictureUsecase: sl(),
+        removePictureUsecase: sl(),
       ));
 
   // Usecases
   sl.registerLazySingleton(() => GetStoredPicturesUsecase(repository: sl()));
   sl.registerLazySingleton(() => GetPictureUsecase(repository: sl()));
   sl.registerLazySingleton(() => StorePictureUsecase(repository: sl()));
+  sl.registerLazySingleton(() => RemovePictureUsecase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<PictureRepository>(() => PictureRepositoryImpl(
