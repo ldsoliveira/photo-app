@@ -60,6 +60,7 @@ class _CameraWidgetState extends State<CameraWidget> {
             path: img?.path ?? '',
             description: '',
           );
+
           Navigator.of(context)
               .pushReplacementNamed('/details_widget', arguments: pic);
         },

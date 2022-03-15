@@ -9,10 +9,6 @@ class PictureRepositoryImpl implements PictureRepository {
   final PhotoAppLocalDataSource localDataSource;
 
   @override
-  Future<Picture> getPicture({required PictureImpl picture}) =>
-      localDataSource.getPicture(picture: picture);
-
-  @override
   Future<List<Picture>> storePicture({required PictureImpl picture}) =>
       localDataSource.storePicture(picture: picture);
 

@@ -8,11 +8,7 @@ abstract class PhotoEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetPicture extends PhotoEvent {
-  final PictureImpl picture;
-
-  GetPicture(this.picture);
-}
+class GetStoredPictures extends PhotoEvent {}
 
 class StorePicture extends PhotoEvent {
   final PictureImpl picture;
@@ -25,5 +21,3 @@ class RemovePicture extends PhotoEvent {
 
   RemovePicture(this.picture);
 }
-
-class GetStoredPictures extends PhotoEvent {}

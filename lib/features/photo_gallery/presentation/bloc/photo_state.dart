@@ -8,16 +8,14 @@ abstract class PhotoState extends Equatable {
   List<Object> get props => [];
 }
 
+class Loading extends PhotoState {}
+
 class Empty extends PhotoState {
   final message = 'No pictures taken yet.';
 }
-
-class Loading extends PhotoState {}
 
 class Loaded extends PhotoState {
   final List<Picture> pictures;
 
   Loaded({required this.pictures});
 }
-
-class Error extends PhotoState {}

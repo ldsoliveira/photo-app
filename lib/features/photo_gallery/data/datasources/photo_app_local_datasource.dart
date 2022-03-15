@@ -5,22 +5,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class PhotoAppLocalDataSource {
   Future<List<Picture>> storePicture({required PictureImpl picture});
-  Future<Picture> getPicture({required PictureImpl picture});
   Future<List<Picture>> removePicture({required PictureImpl picture});
   Future<List<Picture>> getStoredPictures();
 }
+
+// TODO: tentar melhorar essa logica terrivel aqui
 
 class PhotoAppLocalDataSourceImpl implements PhotoAppLocalDataSource {
   final SharedPreferences sharedPreferences;
 
   PhotoAppLocalDataSourceImpl({required this.sharedPreferences});
-
-  @override
-  Future<Picture> getPicture({required Picture picture}) async {
-    final storedPictures = await sharedPreferences.getStringList(kKeyValue);
-    final convertedPictures = _convertedPicturesFromStorage(storedPictures);
-    return convertedPictures.firstWhere((pic) => pic.props == picture.props);
-  }
 
   @override
   Future<List<Picture>> storePicture({required PictureImpl picture}) async {
@@ -33,21 +27,20 @@ class PhotoAppLocalDataSourceImpl implements PhotoAppLocalDataSource {
     ];
 
     await sharedPreferences.setStringList(kKeyValue, finalList);
-    return _convertedPicturesFromStorage(finalList);
+    return _convertPicturesFromStorage();
   }
 
   @override
-  Future<List<Picture>> getStoredPictures() async {
-    final storedPictures = await sharedPreferences.getStringList(kKeyValue);
-    return _convertedPicturesFromStorage(storedPictures);
-  }
+  Future<List<Picture>> getStoredPictures() async =>
+      _convertPicturesFromStorage();
 
   @override
   Future<List<Picture>> removePicture({required PictureImpl picture}) async {
-    final storedPictures = await sharedPreferences.getStringList(kKeyValue);
-    final convertedPictures = _convertedPicturesFromStorage(storedPictures);
+    final convertedPictures = await _convertPicturesFromStorage();
+
     convertedPictures.removeWhere(
-      (pic) => pic.props == picture.props,
+      (pic) =>
+          pic.path == picture.path && pic.description == picture.description,
     );
 
     await sharedPreferences.setStringList(
@@ -57,7 +50,10 @@ class PhotoAppLocalDataSourceImpl implements PhotoAppLocalDataSource {
 
     return getStoredPictures();
   }
-}
 
-List<PictureImpl> _convertedPicturesFromStorage(List<String>? pictures) =>
-    pictures?.map((pic) => PictureImpl.fromJson(pic)).toList() ?? [];
+  Future<List<PictureImpl>> _convertPicturesFromStorage() async {
+    final storedPictures = await sharedPreferences.getStringList(kKeyValue);
+    return storedPictures?.map((pic) => PictureImpl.fromJson(pic)).toList() ??
+        [];
+  }
+}

@@ -1,8 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:photo_app/features/photo_gallery/data/datasources/photo_app_local_datasource.dart';
 import 'package:photo_app/features/photo_gallery/data/repositories/picture_repository_impl.dart';
-import 'package:photo_app/features/photo_gallery/domain/repositories/picture_repository.dart';
-import 'package:photo_app/features/photo_gallery/domain/usecases/get_picture_usecase.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/get_stored_pictures_usecase.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/remove_picture_usecase.dart';
 import 'package:photo_app/features/photo_gallery/domain/usecases/store_picture_usecase.dart';
@@ -14,7 +12,6 @@ GetIt sl = GetIt.instance;
 Future<void> init() async {
   // Bloc
   sl.registerFactory(() => PhotoBloc(
-        getPictureUsecase: sl(),
         getStoredPicturesUsecase: sl(),
         storePictureUsecase: sl(),
         removePictureUsecase: sl(),
@@ -22,12 +19,11 @@ Future<void> init() async {
 
   // Usecases
   sl.registerLazySingleton(() => GetStoredPicturesUsecase(repository: sl()));
-  sl.registerLazySingleton(() => GetPictureUsecase(repository: sl()));
   sl.registerLazySingleton(() => StorePictureUsecase(repository: sl()));
   sl.registerLazySingleton(() => RemovePictureUsecase(repository: sl()));
 
   // Repository
-  sl.registerLazySingleton<PictureRepository>(() => PictureRepositoryImpl(
+  sl.registerLazySingleton<PictureRepositoryImpl>(() => PictureRepositoryImpl(
         localDataSource: sl(),
       ));
 
