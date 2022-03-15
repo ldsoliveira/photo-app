@@ -1,2 +1,2 @@
-const String kMaterialAppTitle = 'Photo Gallery';
+const String kMaterialAppTitle = 'Photo App';
 const String kKeyValue = 'LOCAL_PICTURE';

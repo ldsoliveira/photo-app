@@ -10,6 +10,7 @@ import 'package:photo_app/features/photo_gallery/presentation/utils/routes/app_r
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
+
   runApp(PhotoGalleryApp());
 }
 

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 import 'package:photo_app/features/photo_gallery/data/models/picture_impl.dart';
 
 class CameraWidget extends StatefulWidget {
@@ -30,6 +30,7 @@ class _CameraWidgetState extends State<CameraWidget> {
         await _controller?.initialize();
         await _controller?.setFlashMode(FlashMode.off);
 
+        // isso aqui precisa?
         setState(() {});
       } catch (e) {
         print(e);
