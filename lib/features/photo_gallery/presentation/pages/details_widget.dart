@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_app/core/utils/constants.dart';
-import 'package:photo_app/features/photo_gallery/domain/entities/picture.dart';
+import 'package:photo_app/features/photo_gallery/data/models/picture_impl.dart';
 import 'package:photo_app/features/photo_gallery/presentation/bloc/photo_bloc.dart';
 import 'package:photo_app/features/photo_gallery/presentation/bloc/photo_event.dart';
 
@@ -11,7 +11,7 @@ class DetailsWidget extends StatefulWidget {
     required this.picture,
   });
 
-  final Picture picture;
+  final PictureImpl picture;
 
   @override
   _DetailsWidget createState() => _DetailsWidget();
@@ -19,14 +19,12 @@ class DetailsWidget extends StatefulWidget {
 
 class _DetailsWidget extends State<DetailsWidget> {
   final _controller = TextEditingController();
-  late final PhotoBloc bloc;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
       _controller.text = widget.picture.description;
-      bloc = BlocProvider.of<PhotoBloc>(context);
     });
   }
 
@@ -37,9 +35,14 @@ class _DetailsWidget extends State<DetailsWidget> {
         title: Text(kMaterialAppTitle),
         actions: [
           IconButton(
-            onPressed: () => bloc.add(
-              StorePicture(widget.picture),
-            ),
+            onPressed: () {
+              BlocProvider.of<PhotoBloc>(context).add(
+                StorePicture(widget.picture),
+              );
+              //TODO: Não está enviando a descrição
+              FocusScope.of(context).unfocus();
+              Navigator.of(context).pop();
+            },
             icon: Icon(Icons.check),
           ),
           IconButton(

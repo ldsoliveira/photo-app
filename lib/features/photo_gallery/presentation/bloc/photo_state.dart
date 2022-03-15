@@ -8,7 +8,9 @@ abstract class PhotoState extends Equatable {
   List<Object> get props => [];
 }
 
-class Empty extends PhotoState {}
+class Empty extends PhotoState {
+  final message = 'No pictures taken yet.';
+}
 
 class Loading extends PhotoState {}
 

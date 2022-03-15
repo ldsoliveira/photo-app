@@ -21,11 +21,15 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     yield Loading();
 
     if (event is GetPicture) {
-      getPictureUsecase(event.picture);
+      final picture = await getPictureUsecase(event.picture);
+      yield Loaded(pictures: [picture]);
     } else if (event is GetStoredPictures) {
-      getStoredPicturesUsecase();
+      final pictures = await getStoredPicturesUsecase();
+      yield Loaded(pictures: pictures);
     } else if (event is StorePicture) {
+      final pictures = await getStoredPicturesUsecase();
       storePictureUsecase(event.picture);
+      yield Loaded(pictures: pictures);
     } else {
       throw Exception();
     }

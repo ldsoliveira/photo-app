@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:photo_app/features/photo_gallery/domain/entities/picture.dart';
+import 'package:photo_app/features/photo_gallery/data/models/picture_impl.dart';
 
 abstract class PhotoEvent extends Equatable {
   const PhotoEvent();
@@ -9,13 +9,13 @@ abstract class PhotoEvent extends Equatable {
 }
 
 class GetPicture extends PhotoEvent {
-  final Picture picture;
+  final PictureImpl picture;
 
   GetPicture(this.picture);
 }
 
 class StorePicture extends PhotoEvent {
-  final Picture picture;
+  final PictureImpl picture;
 
   StorePicture(this.picture);
 }
